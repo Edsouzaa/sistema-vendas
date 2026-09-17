@@ -16,12 +16,24 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 import jakarta.persistence.Version;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
-
+@Table(name = "pedidos")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor 
 public class Pedido {
+
+    public Pedido(Cliente cliente){
+        this.cliente = cliente;
+    }
+
     @Id 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,10 +41,12 @@ public class Pedido {
     @NotNull(message = "Cliente é obrigatório")
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
-    private Long cliente_id;
-
+    private Cliente cliente;
     
-    private LocalDateTime data_pedido;
+    @Column(nullable = false)
+    private LocalDateTime data_pedido = LocalDateTime.now();
+
+    @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal valor_total;
 
     @Enumerated(EnumType.STRING)
@@ -44,4 +58,5 @@ public class Pedido {
     
     @Version
     private Long version;
+
 }
