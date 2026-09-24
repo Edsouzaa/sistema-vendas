@@ -47,7 +47,7 @@ public class Pedido {
     private LocalDateTime data_pedido = LocalDateTime.now();
 
     @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal valor_total;
+    private BigDecimal valorTotal;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 10)
