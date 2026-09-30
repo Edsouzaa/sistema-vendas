@@ -1,6 +1,7 @@
 package br.com.aweb.sistema_vendas.service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -134,5 +135,29 @@ public class PedidoService {
         Pedido pedido = optionalPedido.get();
 
         // Devolve todos os itens ao estoque
+        for(ItemPedido item : pedido.getItens()){
+            Produto produto = item.getProduto();
+            produto.setQuantidadeEstoque(produto.getQuantidadeEstoque() + item.getQuantidade());
+            produtoRepository.save(produto);
+        }
+
+        // Alerta status para cancelado
+        pedido.setStatus(StatusPedido.CANCELADO);
+        pedidoRepository.save(pedido);
+    }
+
+    // Read - buscar pedido por ID
+    public Optional<Pedido> buscarPorId(Long id){
+        return pedidoRepository.findById(id);
+    }
+
+    // Read - Listar todos os pedidos
+    public List<Pedido> listarTodos(){
+        return pedidoRepository.findAll();
+    }
+
+    // Read - Listar pedido status
+    public List<Pedido> listarPorStatus(StatusPedido status){
+        return pedidoRepository.findByStatus(status);
     }
 }
