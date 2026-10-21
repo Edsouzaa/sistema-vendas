@@ -42,11 +42,11 @@ public class ItemPedido {
 
     @NotNull
     @Column(precision = 10, scale = 2)
-    private BigDecimal preco_unitario;
+    private BigDecimal precoUnitario;
 
     public ItemPedido(Produto produto, Integer quantidade){
         this.produto = produto;
         this.quantidade = quantidade;
-        this.preco_unitario = produto.getPreco();
+        this.precoUnitario = produto.getPreco();
     }
 }

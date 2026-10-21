@@ -44,10 +44,10 @@ public class Pedido {
     private Cliente cliente;
     
     @Column(nullable = false)
-    private LocalDateTime data_pedido = LocalDateTime.now();
+    private LocalDateTime dataPedido = LocalDateTime.now();
 
     @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal valorTotal;
+    private BigDecimal valorTotal = BigDecimal.ZERO;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 10)

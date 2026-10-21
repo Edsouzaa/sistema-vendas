@@ -30,7 +30,7 @@ public class PedidoService {
         BigDecimal total = BigDecimal.ZERO;
 
         for (ItemPedido item : pedido.getItens()){
-            BigDecimal valorItem = item.getPreco_unitario().multiply(BigDecimal.valueOf(item.getQuantidade()));
+            BigDecimal valorItem = item.getPrecoUnitario().multiply(BigDecimal.valueOf(item.getQuantidade()));
             total = total.add(valorItem);
         }
         pedido.setValorTotal(total);

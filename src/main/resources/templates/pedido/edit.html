@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Editar Pedido</title>
     <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
 </head>
 <body>
+<div th:replace="~{fragments/menu :: menu}"></div>
 <div class="container mt-5">
     <h2>Editar Pedido #<span th:text="${pedido.id}"></span></h2>
     
@@ -37,7 +38,7 @@
                             <option value="">-- Selecione um produto --</option>
                             <option th:each="produto : ${produtos}" 
                                     th:value="${produto.id}" 
-                                    th:text="${produto.nome + ' - Estoque: ' + produto.quantidadeEmEstoque + ' - R$ ' + #numbers.formatDecimal(produto.preco, 1, 2)}"></option>
+                                    th:text="${produto.nome + ' - Estoque: ' + produto.quantidadeEstoque + ' - R$ ' + #numbers.formatDecimal(produto.preco, 1, 2)}"></option>
                         </select>
                     </div>
                     <div class="col-md-3">

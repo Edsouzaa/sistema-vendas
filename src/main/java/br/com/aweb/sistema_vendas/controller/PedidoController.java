@@ -3,12 +3,13 @@ package br.com.aweb.sistema_vendas.controller;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -18,7 +19,7 @@ import br.com.aweb.sistema_vendas.service.ClienteService;
 import br.com.aweb.sistema_vendas.service.PedidoService;
 import br.com.aweb.sistema_vendas.service.ProdutoService;
 
-@RestController
+@Controller
 @RequestMapping("/pedidos")
 public class PedidoController {
     
@@ -50,7 +51,16 @@ public class PedidoController {
         }
 
         Pedido pedido = pedidoService.criarPedido(optionalCliente.get());
-        return "redirect:/pedidos/edit";
+        return "redirect:/pedidos/edit/" + pedido.getId();
+    }
+
+    @GetMapping("/detalhes/{id}")
+    public ModelAndView detalhesPedido(@PathVariable Long id){
+        var optionalPedido = pedidoService.buscarPorId(id);
+        if (!optionalPedido.isPresent()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }
+        return new ModelAndView("pedido/detalhes", Map.of("pedido", optionalPedido.get()));
     }
     
     @GetMapping("/edit/{id}")
@@ -80,6 +90,16 @@ public class PedidoController {
         }
     }
 
+    @PostMapping("/{pedidoId}/remover-item/{itemId}")
+    public String removerItem(@PathVariable Long pedidoId, @PathVariable Long itemId){
+        try {
+            pedidoService.removerItem(pedidoId, itemId);
+            return "redirect:/pedidos/edit/" + pedidoId;
+        } catch (IllegalArgumentException e){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+    }
+
     @PostMapping("/{id}/finalizar")
     public String finalizarPedido(@PathVariable Long id){
         return "redirect:/pedidos";
@@ -94,7 +114,7 @@ public class PedidoController {
         return new ModelAndView("pedido/cancelar", Map.of("pedido", optionalPedido.get()));
     }
 
-    @PostMapping("cancelar/{id}")
+    @PostMapping("/cancelar/{id}")
     public String cancelarPedido(@PathVariable Long id){
         try{
             pedidoService.cancelarPedido(id);

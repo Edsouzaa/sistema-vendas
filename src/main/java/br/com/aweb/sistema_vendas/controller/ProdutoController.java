@@ -17,7 +17,7 @@ import br.com.aweb.sistema_vendas.service.ProdutoService;
 import jakarta.validation.Valid;
 
 @Controller
-@RequestMapping("/produto")
+@RequestMapping("/produtos")
 public class ProdutoController {
 
     private final ProdutoService produtoService;
